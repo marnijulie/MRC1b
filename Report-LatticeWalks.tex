@@ -1,0 +1,85 @@
+\documentclass{article}
+
+% set font encoding for PDFLaTeX, XeLaTeX, or LuaTeX
+\usepackage{ifxetex,ifluatex, amsmath, amsfonts}
+\if\ifxetex T\else\ifluatex T\else F\fi\fi T%
+  \usepackage{fontspec}
+\else
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{lmodern}
+\fi
+
+\usepackage{hyperref}
+
+\title{Asymptotics of Weighted Reflectable Walks in Weyl Chambers}
+\author{Alperen Ergur, Torin Greenwood, Emily Gunawan, Helen Jenne, Alexander Lazar, \\Steve Melczer, Mari Mishna, Samuel Simon,  Eric Nathan Stucky, and Jack Yoon}
+\date{5 June 2021}
+
+% Enable SageTeX to run SageMath code right inside this LaTeX file.
+% http://doc.sagemath.org/html/en/tutorial/sagetex.html
+% \usepackage{sagetex}
+
+% Enable PythonTeX to run Python – https://ctan.org/pkg/pythontex
+% \usepackage{pythontex}
+
+\begin{document}
+\maketitle
+
+\textbf{Problem Statement.}
+
+Previous results on lattice walk asymptotics include an analysis of the weighted $B_2$ model, the weighted ${A_1}^n$ model, and the unweighted $A_d, B_d$ models. 
+
+Our goal is to build on these results to fill in more pieces of the puzzle. Specifically, we aim to eventually determine the asymptotics for reflectable weights walks in all Weyl chambers. 
+
+\textbf{What we did.}
+\begin{itemize}
+\item Understood the basic outline in Melczer-Mishna (flowchart): getting from step set to diagonal of a rational function
+\item Understand relationship between walks in the root lattice and walks in $\mathbb{Z}^n$.
+\item Verified existing results: Excursions GB 6.5.2
+\item Understand structure of critical points for any dimension (but computational challenges arose)
+\end{itemize}
+
+
+
+
+
+\textbf{Next Steps.} It appears to be that big weights are a simplified setup.
+
+Data collection:
+
+Critical point are not as complicated as we were originally thinking, so still a possible avenue to go with the weighted step functions $S(\mathbf{z})$
+
+For large enough weights, we don't have to go through the computationally expensive steps. %We can also use 10.3.3, doing the asymptotics solely in those variables. This replaces the computationally expensive \texttt{SmoothContrib} function from Steve's code.
+We are interested in collaboration with (the computational subgroup).
+%
+UPDATE: Since $m=1$ in this case, we can use 10.3.1 instead: a (the?) relevant integral grows like (no subexponential terms considered here)
+$$ \Phi_z(\mathbf{r}) = \mathbf{z}^{-\mathbf{r}}\cdot \frac{G(\mathbf{z})}{\det \Gamma_\Psi}$$
+
+
+If all the weights are large except for one, we can process the dimensions associated to those weights separately using the above theorem/approximation and then deal with the small weights afterwards. This will keep the problem in the computationally feasible realm.
+
+Step 2:
+
+Taking the determinant, this is the weighted expression, see if we can go through the computation by hand to see if we can keep track of how the weights are being processed.
+
+Steve Chap 9 $\approx$ Robin+Wilson Chap 10
+
+Separate Question:
+
+When you apply the Gr\"obner basis and get two terms, is there a combinatorial bijection? Decomposing all walks into some sort of walks that hit the $x$-axis, and some sort of walks that hit the $y$-axis.
+
+Undoing the orbit sum stuff is trivial because you can expand the numerator, and maybe the walks start at new locations. Can this process be reverse to get new combinatorial bijections?
+%Sam: When I was thinking about this, how do you factor out the $x-1$; that comes from $x^2-1$? I'm not sure if it makes sense to relate that back to a walk.
+% I expeanded it out and took 1+x * x-y^2, and say it's ... say we cancelled the 1-x term. Then the four terms that we get (after dividing by 1/xy to gt what the small steps would be) is different from the step set; it's the group.
+% Torin: What happens if G=1? (we're not sure)
+
+%\section{Problem Statement}
+
+
+%\subsection{Hello}
+
+
+
+
+\end{document}
