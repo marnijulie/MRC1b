@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[letterpaper]{article}
 
 % set font encoding for PDFLaTeX, XeLaTeX, or LuaTeX
 \usepackage{ifxetex,ifluatex, amsmath, amsfonts}
@@ -10,11 +10,17 @@
   \usepackage{lmodern}
 \fi
 
+\setlength{\topmargin}{-13mm}
+\setlength{\textwidth}{6.4in}
+\setlength{\oddsidemargin}{1mm}
+\setlength{\textheight}{9 in}
+\setlength{\footskip}{.2 in}
+
 \usepackage{hyperref}
 
 \title{Asymptotics of Weighted Reflectable Walks in Weyl Chambers}
 \author{Alperen Ergur, Torin Greenwood, Emily Gunawan, Helen Jenne, Alexander Lazar, \\Steve Melczer, Mari Mishna, Samuel Simon,  Eric Nathan Stucky, and Jack Yoon}
-\date{5 June 2021}
+\date{\today}
 
 % Enable SageTeX to run SageMath code right inside this LaTeX file.
 % http://doc.sagemath.org/html/en/tutorial/sagetex.html
@@ -24,52 +30,66 @@
 % \usepackage{pythontex}
 
 \begin{document}
+\fontsize{12}{13}
 \maketitle
+\large
+\begin{description}
+\item[Problem statement.]  We aim to find asymptotics on the number of weighted lattice walks in Weyl chambers by applying the machinery from Pemantle and Wilson's \emph{Analytic Combinatorics in Several Variables}.  Previous results on lattice walk asymptotics include an analysis of the weighted $B_2$ model, the weighted ${A_1}^n$ model, and the unweighted $A_d$ and $B_d$ models.  Our goal is to find a systematic analysis of walks in more weighted Weyl chambers and in higher dimensions.
 
-\textbf{Problem Statement.}
+%build on these results to fill in details for more Weyl chambers.
 
-Previous results on lattice walk asymptotics include an analysis of the weighted $B_2$ model, the weighted ${A_1}^n$ model, and the unweighted $A_d, B_d$ models. 
+\item[First steps.] We began the week by reviewing previously known results.  Using \emph{Asymptotic Lattice Path Enumeration Using Diagonals} by Melczer and Mishna for guidance, we discussed how to encode the number of walks with a given step set as the diagonal of a rational generating function.  We then reviewed the steps to extract asymptotics from a multivariate generating function by using singularity analysis and identifying relevant critical points.  To ensure we understood the machinery, we successfully rederived asymptotics for Example 6.5.2 in Melczer and Wilson's \emph{Higher Dimensional Lattice Walks: Connecting Combinatorial and Analytic Behavior}.  We did this by modifying Sage code from the website accompanying Melczer's \emph{An Invitation to Analytic Combinatorics}.  Next, we rederived asymptotic expressions for Gouyou-Beauchamps excursions, noting that the existence of two critical points lead to periodic behavior in the asymptotics.  Finally, we reviewed a transformation between walks in the root lattice and walks in $\mathbb{Z}^d$.
 
-Our goal is to build on these results to fill in more pieces of the puzzle. Specifically, we aim to eventually determine the asymptotics for reflectable weights walks in all Weyl chambers. 
+\item[Ongoing work.]  When looking at weighted walks in higher dimensions, we found that the nature of the critical points controlling the asymptotics depends on the weights placed on the walks, mirroring what Mishna and Simon found in \emph{The asymptotics of reflectable weighted walks in arbitrary dimension}.  We noted that focusing on excursions and walks with large weights would simplify our analyses.  Thus, we will look at walks with large weights first, and gradually allow some weights to be small.  Theorem 10.3.1 in Pemantle and Wilson's textbook will cover the case when a single weight is small, and Theorem 10.3.4 or a direct residue computation could handle additional small weights.  Ideally, a provable pattern will emerge depending on the number of small weights like in Mishna and Simon's work.
 
-\textbf{What we did.}
-\begin{itemize}
-\item Understood the basic outline in Melczer-Mishna (flowchart): getting from step set to diagonal of a rational function
-\item Understand relationship between walks in the root lattice and walks in $\mathbb{Z}^n$.
-\item Verified existing results: Excursions GB 6.5.2
-\item Understand structure of critical points for any dimension (but computational challenges arose)
-\end{itemize}
-
-
-
-
-
-\textbf{Next Steps.} It appears to be that big weights are a simplified setup.
-
-Data collection:
-
-Critical point are not as complicated as we were originally thinking, so still a possible avenue to go with the weighted step functions $S(\mathbf{z})$
-
-For large enough weights, we don't have to go through the computationally expensive steps. %We can also use 10.3.3, doing the asymptotics solely in those variables. This replaces the computationally expensive \texttt{SmoothContrib} function from Steve's code.
-We are interested in collaboration with (the computational subgroup).
+We also noticed that in Melczer and Wilson's work, they used an algebraic trick similar to partial fractions to reduce a generating function into the sum of two simpler generating functions.  From a combinatorial perspective, this algebraic trick likely describes a relationship between different sets of walks.  We propose using the decomposition to find a bijection between walks in the positive quadrant in $\mathbb{Z}^2$ with a given step set ending anywhere, and slightly modified walks that end on an axis.
+\end{description}
+\thispagestyle{empty}
 %
-UPDATE: Since $m=1$ in this case, we can use 10.3.1 instead: a (the?) relevant integral grows like (no subexponential terms considered here)
-$$ \Phi_z(\mathbf{r}) = \mathbf{z}^{-\mathbf{r}}\cdot \frac{G(\mathbf{z})}{\det \Gamma_\Psi}$$
-
-
-If all the weights are large except for one, we can process the dimensions associated to those weights separately using the above theorem/approximation and then deal with the small weights afterwards. This will keep the problem in the computationally feasible realm.
-
-Step 2:
-
-Taking the determinant, this is the weighted expression, see if we can go through the computation by hand to see if we can keep track of how the weights are being processed.
-
-Steve Chap 9 $\approx$ Robin+Wilson Chap 10
-
-Separate Question:
-
-When you apply the Gr\"obner basis and get two terms, is there a combinatorial bijection? Decomposing all walks into some sort of walks that hit the $x$-axis, and some sort of walks that hit the $y$-axis.
-
-Undoing the orbit sum stuff is trivial because you can expand the numerator, and maybe the walks start at new locations. Can this process be reverse to get new combinatorial bijections?
+%
+%
+%
+%
+%Our goal is to build on these results to fill in more pieces of the puzzle. Specifically, we aim to eventually determine the asymptotics for reflectable weights walks in all Weyl chambers. 
+%
+%\textbf{What we did.}
+%\begin{itemize}
+%\item Understood the basic outline in Melczer-Mishna (flowchart): getting from step set to diagonal of a rational function
+%\item Understand relationship between walks in the root lattice and walks in $\mathbb{Z}^n$.
+%\item Verified existing results: Excursions GB 6.5.2
+%\item Understand structure of critical points for any dimension (but computational challenges arose)
+%\end{itemize}
+%
+%
+%
+%
+%
+%\textbf{Next Steps.} It appears to be that big weights are a simplified setup.
+%
+%Data collection:
+%
+%Critical point are not as complicated as we were originally thinking, so still a possible avenue to go with the weighted step functions $S(\mathbf{z})$
+%
+%For large enough weights, we don't have to go through the computationally expensive steps. %We can also use 10.3.3, doing the asymptotics solely in those variables. This replaces the computationally expensive \texttt{SmoothContrib} function from Steve's code.
+%We are interested in collaboration with (the computational subgroup).
+%%
+%UPDATE: Since $m=1$ in this case, we can use 10.3.1 instead: a (the?) relevant integral grows like (no subexponential terms considered here)
+%$$ \Phi_z(\mathbf{r}) = \mathbf{z}^{-\mathbf{r}}\cdot \frac{G(\mathbf{z})}{\det \Gamma_\Psi}$$
+%
+%
+%If all the weights are large except for one, we can process the dimensions associated to those weights separately using the above theorem/approximation and then deal with the small weights afterwards. This will keep the problem in the computationally feasible realm.
+%
+%Step 2:
+%
+%Taking the determinant, this is the weighted expression, see if we can go through the computation by hand to see if we can keep track of how the weights are being processed.
+%
+%Steve Chap 9 $\approx$ Robin+Wilson Chap 10
+%
+%Separate Question:
+%
+%When you apply the Gr\"obner basis and get two terms, is there a combinatorial bijection? Decomposing all walks into some sort of walks that hit the $x$-axis, and some sort of walks that hit the $y$-axis.
+%
+%Undoing the orbit sum stuff is trivial because you can expand the numerator, and maybe the walks start at new locations. Can this process be reverse to get new combinatorial bijections?
 %Sam: When I was thinking about this, how do you factor out the $x-1$; that comes from $x^2-1$? I'm not sure if it makes sense to relate that back to a walk.
 % I expeanded it out and took 1+x * x-y^2, and say it's ... say we cancelled the 1-x term. Then the four terms that we get (after dividing by 1/xy to gt what the small steps would be) is different from the step set; it's the group.
 % Torin: What happens if G=1? (we're not sure)
