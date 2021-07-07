@@ -1,0 +1,79 @@
+\documentclass[letterpaper]{article}
+
+% set font encoding for PDFLaTeX, XeLaTeX, or LuaTeX
+\usepackage{ifxetex,ifluatex, amsmath, amsfonts}
+\if\ifxetex T\else\ifluatex T\else F\fi\fi T%
+  \usepackage{fontspec}
+\else
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{lmodern}
+\fi
+
+\setlength{\topmargin}{-13mm}
+\setlength{\textwidth}{6.4in}
+\setlength{\oddsidemargin}{1mm}
+\setlength{\textheight}{9 in}
+\setlength{\footskip}{.2 in}
+
+\usepackage{hyperref}
+
+
+% Enable SageTeX to run SageMath code right inside this LaTeX file.
+% http://doc.sagemath.org/html/en/tutorial/sagetex.html
+% \usepackage{sagetex}
+
+% Enable PythonTeX to run Python – https://ctan.org/pkg/pythontex
+% \usepackage{pythontex}
+
+\begin{document}
+\fontsize{12}{13}
+%\maketitle
+\large
+
+\begin{center}
+Asymptotics of Weighted Reflectable Walks in Weyl Chambers
+\end{center}
+
+{\bf List of questions:}
+\begin{itemize}
+\item (During MRC) Can we analyze $A_2^n, A_3^n$, and other chambers?
+\item (June 22) Is there always a clear meaning for ``large weights''?  How often does ``large weights'' mean the weights are independently $>1$?
+\item (During MRC) Is there a meaningful way to interpret the generating function trick from Steve and Mark's paper?
+\begin{multline*}
+\frac{(x^2 - y)(1 - \overline{xy})(x - y^2)}{(1 - x)(1 - y)(1 - xyt(\overline{y} + y\overline{x} + x))} =\\
+ -\frac{(1 - \overline{xy})(x - y^2)(x + 1)}{(1 - y)(1 - xyt(\overline{y} + y\overline{x} + x)} + \frac{(1 - \overline{xy})(x - y^2)}{(1 - x)(1 - xyt(\overline{y} + y\overline{x} + x))}
+\end{multline*}
+\begin{itemize}
+\item On June 16, we looked at coefficients from generating functions on the right.  No clear cancellations emerged.  The problem is likely difficult.  Perhaps code to track collisions more systematically would be helpful.
+\end{itemize}
+%\item 
+\end{itemize}
+
+\hrule\ \\
+{\bf Meeting Notes}\ \\\ \\
+
+{\bf June 22, 2021}
+\begin{itemize}
+\item Helen wrote code to find the asymptotics for walks in the positive quadrant with step set $\{\leftarrow, \uparrow, \searrow\}$.  The code uses Theorem 10.3.1 of Pemantle and Wilson to evaluate the asymptotics.
+\begin{itemize}
+\item There may be a faster way of achieving the same thing -- but, there is a mysterious factor of $ab$, and it's not clear if the starting point is $(x, y)$ or $(ax, by)$.
+\item Theorem 10.3.1 does simplify massively here, because the matrix has many 0 entries, and the diagonal (except the (1, 1)-entry) is all $\pm1$'s when we plug in the critical point.
+\end{itemize}
+\item The asymptotics appear to be correct by using recursive code to compute the weighted paths directly.
+\begin{itemize}
+\item This recursive code is inefficient.  Perhaps we can improve it by using Sage packages like \url{http://www.luschny.de/math/seq/gfun/gfun.html} or \url{https://gitlab.inria.fr/discretewalks/comb_walks}.
+\end{itemize}
+\item Next steps include: writing more efficient code in both parts, and looking at one small weight and one large weight.
+\end{itemize}
+
+\newpage
+
+{\bf June 30, 2021} (Eric and Torin)
+\begin{itemize}
+\item We looked over the \texttt{GFun} Sage package, and got it to run in Cocalc.  Unfortunately, it appears to be restricted to bivariate generating functions, so we are unable to use it for our trivariate examples.
+\item We also got the \texttt{comb\_walks} package to run.  The documentation is currently missing complete examples, and it was difficult to tell what the code could do for us.  It can randomly generate walks.
+\end{itemize}
+
+
+\end{document}
