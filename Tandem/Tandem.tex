@@ -1,0 +1,618 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm,epic}
+\usepackage{mathrsfs}
+
+\usepackage{tikz} 
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\usepackage{graphicx, xcolor}
+\usepackage{footnote,pifont}
+\usetikzlibrary{patterns}
+\renewcommand{\labelenumi}{\theenumi}
+\renewcommand{\theenumi}{{\rm(\roman{enumi})}}
+\renewcommand{\geq}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{proposition}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{que}{Problem}
+\newtheorem{conjecture}[que]{Conjecture}
+
+%------------------------------------------------------------------
+% Document formatting
+
+\usepackage[T1]{fontenc}
+\usepackage[mathscr]{eucal}
+\usepackage{fullpage}
+
+\newcommand\mjm[1]{\mbox{}
+{\marginpar{\color{red!50}$\EuScript{M}$}}
+{\it\noindent\color{red!50}#1}}%
+
+
+%------------------------------------------------------------------
+% Math Notation
+\newcommand{\cT}{\EuScript{T}}
+
+
+\author{MRC1b Group\footnote{using computations of S Melczer and J Courtiel}}
+%------------------------------------------------------------------
+\title{{\sc The Tandem Model}\\{\sl \color{gray}Working Notes}}
+%------------------------------------------------------------------
+\begin{document}
+\maketitle
+
+\section{Introduction}
+Consider the model of lattice path walks defined by steps from the set
+$\cT=\{ [1,0], [-1,1], [0,-1] \}$ restricted to the first quadrant. In
+the literature, these have taken the name the ``Tandem Model'' owing
+to the fact that they can model two queues operating in tandem. 
+The generating function of this model is algebraic, and there is an
+explicit form. 
+
+Our goal here is two-fold: First, we would are interested in the
+enumeration of walks in {\it weighted\/} tandem models in a form such
+that generic weights appear in the formula. This in turn permits a
+clear picture of the reliance of the final asymptotic formulas on the
+drift of the initial model. Secondly, we strive to understand the
+interaction and connections between several different techniques. Can
+the use of multiple techniques simultaneously facilitate the
+computations? This may imply easier computations, nicer forms for
+answers, or suggest means for random generation. In each case we
+derive expressions for the dominant singularity of the generating
+function, and we compare them. It also allows us ot interpolate
+between $Q(0,0)$ and $Q(1,0)$.
+
+\mjm{Once we have a conclusion, we can add to this.}
+\begin{figure}\center
+{\Huge X}
+\caption{A random tandem walk}
+\end{figure}
+\section{The unweighted case}
+\subsection{Background}
+\mjm{Connection to Young tableau of bounded height}
+
+There is a simple size preserving bijection from the set of walks in
+the tandem model to standard Young tableaux of height bounded by 3.
+Recall, a standard Young tableau is a filling of a Ferrer's diagram
+that is strictly increasing along the rows and columns.
+
+We denote the steps of a tandem walk by $N$, $SE$, $W$ and remark that
+the condition of staying in the quarter plane implies that at any
+point in the walk the number of $W$ is at most the number of $SE$
+steps, which is in turn bounded by the number of $N$ steps.  The
+aforementioned bijection is as follows. The image of a walk
+$w=(w_1, w_2, \dots, w_n)\in \{N, SE, W\}^n$ is a filling of the
+partition $(\lambda_1, \lambda_2, \lambda_3)$ of $n$, where
+$\lambda_1$ is the number of $N$ steps, $\lambda_2$ is the number of
+$SE$ steps and $\lambda_3$ is the number of $W$ steps. The quarter
+plane condition ensures that this is a Ferrers diagram. To fill this
+diagram, parse the $w$. If $w_i=N$, (resp. $SE$, $W$) then the number
+$i$ is added to the top row (resp. second, third).  Remark that the
+endpoint of a walk is $(\#N-\#SE, \#SE -\#W)$.
+
+For example the image of $w=(N, N, SE, N, W, SE, N)$, which is a
+tandem walk that ends at $(2, 1)$ is the tableau
+$(1,2,4,7)(3,6)(5)$. \mjm{Format this.}
+
+In fact, there are many combinatorial classes in bijection. Many of
+them are listed in the OEIS entry A001006. For example, number of ways
+of drawing any number of nonintersecting chords joining $n$ (labelled)
+points on a circle is the same as the number of tandem walks of length~$n$. 
+
+\subsection{Exact enumeration}
+Let~$a_{i,j}(n)$ denote the number of walks with steps from $\cT$,
+starting at the origin, ending at the point $(i,j)$ and staying in the
+first quadrant. We can use the bijection to derive an explicit formula
+for~$a_{i,j}(n)$. 
+
+The enumeration of standard Young tableaux is a well explored topic,
+and in this case, we use the well-known hook formula to enumerate
+tableaux of a given shape. The number of standard young tableaux of
+shape $\lambda$ is given by
+\[|SYT(\lambda)| = \frac{n!}{\prod_{x\in[\lambda]} h_x}\]
+where the product is taken over all boxes $x$ in the ferrer's diagram,
+and $h_x$ is the sum of the boxes to the right and below the box $x$
+in the diagram.
+
+If a walk ends at point $(i,j)$ and is of length $n$, then $n=\#N
++\#SE+\#W$ and $i=\#N-\#SE$ $j=\#SE -\#W$ so it is in bijection 
+with a partition of shape $\lambda=(n+2i+j, n-i+j, n-i-2j)$.
+
+\mjm{I don't recall how to translate the hook length formula into the one below.
+Remark: $n-i-2j=3 \#W$, $n+2i+j=3\#N$, $n-i+j=3\#S$, hence it is 
+of the shape $\lambda=(n+2i+j, n-i+j, n-i-2j)$}
+
+\begin{equation}
+\label{eqn:exact}a_{ij}(n)=
+\begin{cases}{\frac { \left( i+1 \right)  \left( j+1 \right)  \left( i+j+2 \right) 
+n!}{ \left( n/3-i/3-2/3\,j \right) !\, \left( n/3-i/3+j/3+1 \right) !
+\, \left( n/3+2/3\,i+j/3+2 \right) !}}
+& \mbox{if } 3|n-i-2j, 3|n-i+j, \mbox{ and } 3|n+2i+j \\
+0 & \mbox{otherwise}.
+\end{cases}
+\end{equation}
+
+\subsection{Generating function expression}
+\mjm{Expand upon this}
+\[
+Q(1,1; t) = \frac{ 1 - t - \sqrt{1-2t-3t^2}}{2t^2}.
+\]
+Exponential GF: $\exp(t)\operatorname{BesselI}(1, 2t)/t$.
+
+\subsection{Functional equation}
+Although we consider several strategies, each relies on an analysis of the
+\emph{complete generating function\/} defined as the formal series in
+$\mathbb{Q}[x, y][\,[t]\,]$: 
+\[
+Q(x,y;t)=\sum_{i,j,n} a_{ij}(n)\, x^i y^j t^n.
+\]
+We remark that several evaluations are of interest. The series
+$Q(x,0;t)$ marks the walks that return the $x$-axis and tracks the
+position.  The series $Q(0,0;t)$ is the generating function of
+\emph{excursions}, that is walks that return to $(0,0)$, and the
+series $Q(1,1;t)$ is the generating function of walks that end
+anywhere.
+
+The complete generating function satisfies the following functional
+equation  
+\begin{equation}
+\label{eqn:kernel}
+K(x,y)Q(x,y;t)=xy - K(x,0)Q(x,0;t) -K(0,y)Q(0,y;t) \quad \mbox{with}
+\quad K(x,y)= xy(1-t(x+\frac{y}{x} +\frac{1}{y})).
+\end{equation}
+
+\subsection{Differential equation}
+Given a series development, it is possible to guess a candidate
+differential equation for which the series is a solution. This is
+implemented in Maple using the {\tt gfun} package~\cite{}, for example. The
+initial series development of $Q(x,y;t)$ is straightfoward to compute
+using a basic recurrence. This process is robust enough to handle
+additional variables, although practically speaking, we were only able
+to guess differential equations for functions with one additional
+variable. Using the differential equations guessed for $K(x,0)Q(x,0)$
+and $K(0,y)Q(0,y)$, using equation Eqn.~\eqref{eqn:kernel}, and the
+closure properties of differential equations, we found a candidate
+differential equation satisfied by $K(x,y)Q(x,y;t)$. These are all
+located in the appendix. \mjm{Put these in the appendix. PRobably not
+  the one for $Q(x,y;t)$ though.}
+
+The dominant singularity of the generating function is a root of the
+leading term. Once the value is identified, a local solution expansion
+around this point gives the sub-exponential factor in the asymptotic
+growth.
+
+The leading coefficient \mjm{mention the order} for the candidate DE for $K(x,0)Q(x,0)$ is:
+\begin{align*}
+p(x,t)&={t}^{4} \left( 3\,t-1 \right)  \left( 9\,{t}^{2}+3\,t+1 \right) 
+ \left( {x}^{3}{t}^{2}-2\,t{x}^{2}-4\,{t}^{2}+x \right) \\& \qquad \qquad \left( 63\,{t
+}^{4}{x}^{3}-5\,{x}^{4}{t}^{2}-99\,{t}^{3}{x}^{2}+288\,{t}^{4}+5\,{x}^
+{3}t-52\,x{t}^{2}+4\,{x}^{2} \right)
+\\&= {t}^{4} \left( 3\,t-1 \right) \, p_1(x,t)\,  p_2(x,t)\,  p_3(x,t).
+\end{align*}
+We are interested in positive real valued solutions to $p(x,t)$ for fixed
+non-negative real values of $x$. Such a value exists by Pringsheim's
+theorem. These are the candidates for dominant singularity. 
+When $x=0$ the only real postive root is $t=1/3$. Thus, the dominant
+singularity of $Q(0,0;t)$ is $1/3$. There are two real roots when
+$x=1$, $t=1/3$ and 
+\[t={\frac { \left( 25381+819\,\sqrt {518} \right) ^{2/3}-2\,\sqrt [3]{
+25381+819\,\sqrt {518}}+667}{117\,\sqrt [3]{25381+819\,\sqrt {518}}}}
+\sim 0.4461\dots.\] The latter is a root of $p_3(1,t)$. 
+
+\mjm{Is it fair to say that from this process we cannot decide which
+  one is the dominant singularity?}
+
+Other evaluations will be important for the weighted case, as we shall
+see in Section~\ref{sec:WeightedDE}. Most important, in fact, will be
+how the dominant singularity changes as a function of $x$. The point
+$x=1$ is very important, and behaviour changes both in this set up,
+and in the solution given by an integral.
+
+\mjm{
+\begin{enumerate}
+\item Note how many terms would have been necessary for the $Q(x,y;t)$
+  DE. Can we do this compuation?
+\item Does desingularization help?
+\item We need to prove that the DEs are correct. Possibilities: (1)
+  Using the explicit form of $a_{ij}(n)$ of Equation~\ref{eqn:exact},
+  possibly with computer algebra, if the computations get too messy;
+  (2) Try to get a diagonal form for $Q(x,0)$ (3) Are there bounds
+  that we can compute?.
+\end{enumerate}
+
+}
+
+
+
+\subsection{Analytic expression for $Q(x,0)$ as an integral}
+Since the tandem model is a small step model, it fits into the
+framework of Fayolle/Kurkova/Raschel.  As a first result, since the
+drift is zero, by Fayolle/Raschel~\cite{FaRa10} the dominant
+singularity is the number of steps, that is $\rho=\frac{1}{3}$.
+
+We can also describe the integral form. 
+
+
+The following expressions for $Q(x,0)$ and $Q(0,y)$ can be found in \cite[Theorem 1]{Ra12} (with $(i-1,j-1)$ denoting the starting point of the walk):
+\begin{equation}
+\label{eq:expression_K(x,0)Q(x,0)_Ra12}
+     \left\{\begin{array}{lll}
+     K(x,0)Q(x,0) &=&\displaystyle \frac{1}{2\pi i}\int_{\mathcal M} u^iY_0(u)^j\frac{w'(u)}{w(x)-w(u)}\text{d}u,\medskip\\
+     K(0,y)Q(0,y) &=&\displaystyle \frac{1}{2\pi i}\int_{\mathcal L} X_0(u)^{i}u^j\frac{\widetilde w'(u)}{\widetilde w(y)-\widetilde w(u)}\text{d}u,
+     \end{array}\right.
+\end{equation}
+provided that $w(0)=\widetilde w(0)=\infty$, which will hold with our
+choice \eqref{eq:function_w_w_tilde}.
+
+\[Y_1(x)=1/2\,{\frac {-t+x+\sqrt {-4\,{t}^{2}{x}^{3}+{t}^{2}-2\,tx+{x}^{2}}}{t
+x}}\quad Y_0(x)=-1/2\,{\frac {t-x+\sqrt {-4\,{t}^{2}{x}^{3}+{t}^{2}-2\,tx+{x}^{2}}
+}{tx}}\]
+\[X_1(y)=1/2\,{\frac {-t{y}^{2}+y+\sqrt {{t}^{2}{y}^{4}-2\,t{y}^{3}-4\,{t}^{2}
+y+{y}^{2}}}{t}}\quad X_0(y)=
+-1/2\,{\frac {t{y}^{2}+\sqrt {{t}^{2}{y}^{4}-2\,t{y}^{
+3}-4\,{t}^{2}y+{y}^{2}}-y}{t}}\]
+
+
+
+ $\mathcal M$ is the curve $X([y_1,y_2])$ and $\mathcal L=Y([x_1,x_2])$. Equation \eqref{eq:expression_K(x,0)Q(x,0)_Ra12} provides contour integral expressions. In particular, with this formula the generating functions are defined only in the interior of the curves $\mathcal M$ and $\mathcal L$.
+The conformal gluing functions $w$ and $\widetilde w$ are defined by
+(see \cite[Theorem 3 (iv)]{Ra12})
+
+\begin{equation}
+\label{eq:function_w_w_tilde}
+     \left\{\begin{array}{lll}
+     w(x) &=& \dfrac{t}{x^2}-\dfrac{1}{x}-tx,\medskip\\
+     \widetilde w(y) &=& ty^2-y-\dfrac{t}{y}.
+     \end{array}\right.
+\end{equation}
+Functions $w$ and $\widetilde w$ satisfy $w=\widetilde w(Y_0)$ and $\widetilde w=w(X_0)$, and in particular $w(X_0(Y_0))=w$.
+
+\mjm{Update the caption for the figure}
+\begin{figure}\center
+\includegraphics[width=.3\textwidth]{curveX-singular.jpg}$\quad$
+\includegraphics[width=.3\textwidth]{curveX.jpg}
+\caption{The curve $\mathcal M$ for $t=1/3$ and $t=1/3-\epsilon$}
+\end{figure}
+
+\subsubsection{Singularities of $Q(0,0)$}
+
+
+\subsubsection{Analytic continuation}
+
+One has
+\begin{equation}
+\label{eq:eq(4.4)}
+     K(x,0)Q(x,0)=K(X_0(Y_0(x)),0)Q(X_0(Y_0(x)),0)+Y_0(x)(x-X_0(Y_0(x))).
+\end{equation}
+See \cite[Equation (4.4)]{FaRa-12} for the original derivation of the above identity.
+
+The computation of $Q(\alpha,0;\gamma t)$ and $Q(0,\beta;\gamma t)$
+depend on the location of $\alpha$ and $\beta$ w.r.t.\ the curves
+$\mathcal M$ and $\mathcal L$. If there are inside we can use the
+integral expressions given in
+\eqref{eq:expression_K(x,0)Q(x,0)_Ra12}. If not, one has to use first
+\eqref{eq:eq(4.4)}.
+
+\subsection{Orbit Sum}
+This is a candidate for the orbit sum method, and it was computed by
+Bousquet-M\'elou and Mishna~\cite{BoMi10}.
+
+\paragraph{Group of the walk}
+The group is generated by two involutions, and is of order 6.
+\[[[[\iota,\psi,\iota],[{y}^{-1},{x}^{-1}]],[[\psi,\iota],[{\frac {y}{x}
+},{x}^{-1}]],[[\iota,\psi],[{y}^{-1},{\frac {x}{y}}]],[[\psi],[x,{
+\frac {x}{y}}]],[[\iota],[{\frac {y}{x}},y]],[[],[x,y]]]\]
+\paragraph{Positive series extraction expression}
+\begin{equation}\label{eqn:OrbitSum}
+Q(1,1;t)=[x^{>0}][y^{>0}] {\frac {-{y}^{3}{x}^{3}+{x}^{4}y+x{y}^{4}-{x}^{3}-{y}^{3}+xy}{{x}^{2}{
+y}^{2} \left( t{x}^{2}y+t{y}^{2}+tx-xy \right) }}
+\end{equation}
+
+
+\begin{que}
+We can express the generating function for $Q(x,0;t)$ as a diagonal. Use this
+to verify the differential equation. The program of mathematica. 
+\end{que}
+
+\subsection{ACSV}
+\mjm{Put in the details from the expression for the counting generating function 
+\cite{MeWiXX}
+}
+
+
+\subsection{Creative Telescoping}
+Has solution as an integral of hypergeometric functions (van Heoij)
+\[Q(1,0;t)=(1+t)^{1/2}(1-3t)^{3/2}Int((hypergeom([-2/3,-1/3],[1],27t)-1+4t(hypergeom([-1/3,1/3],[2],27t^3)-1)+9t^2)/(3(1+t)^{3/2}(1-3t)^{5/2}),t)/t^3.\]
+
+\mjm{Get this entry from the table of Chyzak.}
+
+
+\section{The weighted case}
+The weighted version of a model uses the same directions and assigns
+non-negative real valued weights. When the weights are
+integers, it can be interpreted as multiple distinct copies of the
+same step. When they are positive and sum to one, it is a probability.
+Kauers and Yatchuk~\cite{KaYa15} determined that all possible
+non-negative weightings of this model will lead to D-finite generating
+functions.
+
+Let the weights, respectively, be $w=(\alpha, \beta, \gamma)$ for
+$[1,0]$ (E), $[-1,1]$ (NW) and $[0,-1]$ (S).  The weight of a walk is
+the product of the weight of each step. For example the weight of the
+walk E E NW S is $\alpha^2\beta\gamma$. We are interested in the series
+\begin{equation}
+\label{eq:Qw}
+Q^{(w)}(x,y;t)=\sum_{w\in \mathcal{W}} \mbox{weight}(w)\, x^{x(w)}y^{y(w)} t^{\mbox{length}(w)}.
+\end{equation}
+
+\subsection{From weights to parameters}
+The generating function for the weighted model can be expressed by an
+algebraic substitution evaluation of the unweighted model. 
+
+\begin{proposition} The complete generating function for $\cT^{(w)}$
+  the weighted tandem model with weight vector $(\alpha, \beta,
+  \gamma)$, denoted $Q^{(w)}(x,y;t)$ satisfies:
+\begin{equation}
+Q^{(w)}(x,y;t)=
+Q\left(\frac{\alpha}{\gamma\beta}x,\frac{\beta}{\gamma}y;\frac{t}{\alpha\beta\gamma}\right).
+\end{equation}
+Here $Q(x,y;t)$ is the generating function for the unweighted model,
+equivalently for $w=(1,1,1)$. 
+\end{proposition}
+\begin{proof}
+\mjm{Proof using the explicit formula.}
+\end{proof}
+
+We recall Lemma~16 from~\cite{AlBo14}. If $F(a,u)=\sum f_n(a) u^n$ is
+a formal power series in $u$ with coefficients in $\mathbb{N}[a]$ such
+that $f_n(a)$ has degree at most $n$. Assume further that~$F$ is not a
+polynomial.
+ 
+For $a\geq 0$, let $\rho(a)$ be the radius of convergence of the
+series $F(a, \cdot)$. Then $\rho$ is a non-increasing function on $[0,
+\infty)$ which is finite and and continuous on $(0, +\infty)$. 
+
+This means that the radius of convergence of $Q(x,0;t)$ as a series in
+$t$ is continuous as a function of $x$.
+
+\subsection{Analysis of differential equations}
+\label{sec:WeightedDE}
+As we noted earlier, the radius of convergence of $Q(x,0;t)$ as a
+function of $t$ can be expressed as a function of $x$ for non-negative
+real values of $x$.
+
+\mjm{I think a few well chosen figures would make this very clear.}
+
+\begin{figure}\center
+\includegraphics[width=.45\textwidth]{TDomSing.png}
+\includegraphics[width=.45\textwidth]{TDomSing2.png}
+\caption{{\it Left. } Solutions of $p_3(x,t)$ for $0\leq x$ and
+  $t$. {\it Right. }Real solutions to factors of $p(x,t)$}
+\label{fig:TDomSing}
+\end{figure}
+
+
+\subsection{Integral form}
+The integral form in Equation~\eqref{eq:function_w_w_tilde} holds only
+for $|x|<1$. This means that we can only find an expression for
+certain weightings using this strategy.
+\begin{figure}\center
+\includegraphics[width=.45\textwidth]{X0-roots.jpg} $\qquad$
+\includegraphics[width=.45\textwidth]{Y0-roots.jpg}
+\caption{{\it Left. } Singularities coming from $X_0(x)$ for different
+  values of $x$. 
+  $t$. {\it Right. }Singularities coming from $Y_0(y)$ for different
+  values of $y$. }
+\label{fig:TDomSing}
+\end{figure}
+
+
+\subsection{Orbit Sum}
+The orbit sum still holds under the weightings, and we can find an
+expression for the generating function as a diagonal using the
+parameterized group
+
+
+\paragraph{The group}
+\begin{equation}
+[[[\iota,\psi,\iota],[{\frac {\gamma}{y\alpha}},{\frac {\gamma}{\alpha
+\,x}}]],[[\psi,\iota],[{\frac {\beta\,y}{\alpha\,x}},{\frac {\gamma}{
+\alpha\,x}}]],[[\iota,\psi],[{\frac {\gamma}{y\alpha}},{\frac {\gamma
+\,x}{\beta\,y}}]],[[\psi],[x,{\frac {\gamma\,x}{\beta\,y}}]],[[\iota],
+[{\frac {\beta\,y}{\alpha\,x}},y]],[[],[x,y]]]
+\end{equation}
+
+\paragraph{The orbit sum}
+\begin{equation}
+\label{eq:WtOrbitSum}
+Q^{(w)}(x,y;t)=[x^{\geq 0}][y^{\geq 0}]-{\frac {1}{\alpha\,t{x}^{2}y+\beta\,t{y}^{2}+\gamma\,tx-xy} \left( -{
+\frac {{\gamma}^{2}}{y{\alpha}^{2}x}}+{\frac {\beta\,y\gamma}{{x}^{2}{
+\alpha}^{2}}}+{\frac {{\gamma}^{2}x}{{y}^{2}\alpha\,\beta}}-{\frac {{x
+}^{2}\gamma}{\beta\,y}}-{\frac {\beta\,{y}^{2}}{\alpha\,x}}+xy
+ \right) }
+\end{equation}
+\subsection{ACSV}
+
+Regular orbit sum.
+\[Q(1,1;t)= \Delta -{\frac { \left( -{y}^{2}+x \right)  \left( xy-1 \right)  \left( {x}^{2}-y \right) }{ \left( tx{y}^{2}+t{x}^{2}+ty-1 \right)  \left( -1+x \right)  \left( -1+y \right) \\
+\mbox{}xy}}\]
+
+\[Q(u,v;t)= \Delta_{x,y,t} -{\frac { \left( -{y}^{2}+x \right)  \left( xy-1 \right)  \left( {x}^{2}-y \right) }{ \left( tx{y}^{2}+t{x}^{2}+ty-1 \right)  \left( -1+ux \right)  \left( -1+vy \right) \\
+\mbox{}xy}}\]
+
+
+\[Q^{(w)}(1,1;t)= \Delta -{\frac { \left( -{y}^{2}+x \right)  \left( xy-1 \right)  \left( {x}^{2}-y \right) }{ \left({\color{red} ctx{y}^{2}+bt{x}^{2}+aty-1 }\right)  \left( -1+x \right)  \left( -1+y \right) \\
+\mbox{}xy}}\]
+
+\begin{verbatim}
+H1 := c*t*x*y^2+b*t*x^2+a*t*y-1;
+H2 := 1-x;
+H3 := 1-y;
+\end{verbatim}
+\[\displaystyle {\it H1}\, := \,ctx{y}^{2}+bt{x}^{2}+aty-1\]
+\[\displaystyle {\it H2}\, := \,1-x\]
+\[\displaystyle {\it H3}\, := \,1-y\]
+
+\begin{verbatim}
+# On V_\{1,2,3\}
+c123 := [1,1,solve(subs(x=1,y=1,H1),t)];
+\end{verbatim}
+\[\displaystyle {\it c123}\, := \,[1,1, \left( a+b+c \right) ^{-1}]\]
+
+
+\begin{verbatim} 
+with(Groebner):
+GB1 := Basis([H1,diff(H1,x)*x-diff(H1,t)*t,diff(H1,y)*y-diff(H1,t)*t],plex(x,y,t));
+\end{verbatim}
+\[\displaystyle {\it GB1}\, := \,[27\,{a}^{4}b{t}^{3}-{c}^{2},-9\,{a}^{3}b{t}^{2}+{c}^{2}y,-3\,{a}^{2}t+cx]\]
+
+\begin{verbatim} 
+solve(%,\{x,y,t\})
+\end{verbatim}
+\[\displaystyle  \left\{ t={\frac {{\it RootOf} \left( 27\,{{\it \_Z}}^{3}ab-{c}^{2} \right) }{a}},x=3\,{\frac {a{\it RootOf} \left( 27\,{{\it \_Z}}^{3}ab-{c}^{2} \right) }{c}},y\\
+\mbox{}=9\,{\frac {ab \left( {\it RootOf} \left( 27\,{{\it
+            \_Z}}^{3}ab-{c}^{2} \right)  \right) ^{2}}{{c}^{2}}}
+\right\} \]
+
+\begin{verbatim}
+# On V1:
+c1 := [a^(2/3)/(b^(1/3)*c^(1/3)), a^(1/3)*b^(1/3)/c^(2/3), (1/3)*c^(2/3)/(a^(4/3)*b^(1/3))];
+mul(k,k=c1);
+subs(x=c1[1],y=c1[2],t=c1[3],GB1);
+\end{verbatim}
+\[\displaystyle {\it c1}\, := \,[{\frac {{a}^{2/3}}{\sqrt [3]{b}\sqrt [3]{c}}},{\frac {\sqrt [3]{a}\sqrt [3]{b}}{{c}^{2/3}}},1/3\,{\frac {{c}^{2/3}}{{a}^{4/3}\sqrt [3]{b}}}]\]
+\[\displaystyle 1/3\,{\frac {1}{\sqrt [3]{a}\sqrt [3]{b}\sqrt [3]{c}}}\]
+\[\displaystyle [0,0,0]\]
+
+\begin{verbatim}
+# On V12
+subs(x=1,H1);
+\end{verbatim}
+\[\displaystyle ct{y}^{2}+aty+bt-1\]
+
+\begin{verbatim}
+GB12 := Basis(subs(x=1,[H1,diff(H1,y)*y-diff(H1,t)*t]),plex(y,t));
+\end{verbatim}
+\[\displaystyle {\it GB12}\, := \,[ \left( {a}^{2}b-4\,{b}^{2}c
+\right) {t}^{2}+4\,bct-c, \left( -{a}^{2}b+4\,{b}^{2}c \right)
+t+cya-2\,bc]\]
+\begin{verbatim}
+c12 := [1,sqrt(b/c),(a*sqrt(b*c)-2*b*c)/(b*(a^2-4*b*c))];
+simplify(mul(k,k=c12)) assuming a>0,b>0,c>0;
+simplify(subs(x=c12[1],y=c12[2],t=c12[3],GB12)) assuming a>0,b>0,c>0;
+\end{verbatim}
+\[\displaystyle {\it c12}\, := \,[1, \sqrt{{\frac {b}{c}}},{\frac {a
+    \sqrt{bc}-2\,bc}{b \left( {a}^{2}-4\,bc \right)
+  }}]\]\[\displaystyle {\frac {a \sqrt{b} \sqrt{c}-2\,bc}{ \sqrt{c}
+    \sqrt{b} \left( {a}^{2}-4\,bc \right) }}\]\[\displaystyle [0,0]\]
+
+\begin{verbatim}
+# On V13
+subs(y=1,H1);
+\end{verbatim}
+
+\[\displaystyle bt{x}^{2}+ctx+at-1\]
+
+\begin{verbatim}
+GB13 := Basis(subs(y=1,[H1,diff(H1,x)*x-diff(H1,t)*t]),plex(x,t));
+\end{verbatim}
+
+\[\displaystyle {\it GB13}\, := \,[ \left( 4\,{a}^{2}b-a{c}^{2} \right) {t}^{2}-4\,abt+b,t \left( 4\,{a}^{2}b-a{c}^{2} \right) +bxc-2\,ab]\]
+
+\begin{verbatim}
+c13 := [-sqrt(a)/sqrt(b),1,(c*sqrt(a*b)+2*a*b)/(a*(4*a*b-c^2))];
+simplify(mul(k,k=c13)) assuming a>0,b>0,c>0;
+simplify(subs(x=c13[1],y=c13[2],t=c13[3],GB13)) assuming a>0,b>0,c>0;
+\end{verbatim}
+
+\[\displaystyle {\it c13}\, :=
+  \,[-{\frac { \sqrt{a}}{ \sqrt{b}}},1,{\frac {c \sqrt{ab}+2\,ab}{a
+      \left( 4\,ab-{c}^{2} \right) }}]\]
+\[\displaystyle
+  -{\frac {c \sqrt{b} \sqrt{a}+2\,ab}{ \sqrt{a} \sqrt{b} \left(
+        4\,ab-{c}^{2} \right) }}\]
+\[\displaystyle [0,0]\]
+The exponential growth is one of:
+
+\[\displaystyle  \left( a+b+1 \right) ^{n}\]
+\[\displaystyle  \left( 3\,\sqrt [3]{ab} \right) ^{n}\]
+\[\displaystyle  \left( a+2\, \sqrt{b} \right) ^{n}\]
+
+\begin{figure}\center
+\includegraphics[width=.4\textwidth]{growthcurve.jpg}
+\caption{$ a+b+1 $ , $3\,\sqrt[3]{ab} $, $a+2\, \sqrt{b}$ for
+various values of $a$, $b$}
+\end{figure}
+
+\section{Generalizations in higher dimensions}
+The combinatorial interpretation of the model (without weights) as a
+young tableau of height bounded by 3 is naturally generalized by
+considering other heights, say height bounded by~$d+1$. This is in
+bijective correspondence with a $d$-dimensional lattice model
+restricted to a positive cone, with a step set made of $d+1$ steps:
+\[\cT_d=\{e_{i+1}-e_{i}: i=1 \dots d-1\}\cup\{e_1, -e_d\}.\]
+
+These all have D-finite generating functions, from combinatorial
+results~\cite{Gessel90}, and expressions as diagonals of rational
+functions~\cite{Buetal16}. 
+
+{\it Does the same hold in the weighted case?}
+
+The interpretation as Young tableau in the weighted case is clear, 
+but not necessarily motivated. 
+\begin{conjecture}
+The weighted, $d$-dimensional Tandem model has finite group, 
+and a D-finite generating function. 
+\end{conjecture}
+This is likely easily proved given the appropriate change of
+variables as before. 
+
+\mjm{Determine the appropriate change of variables in the higher
+  dimension case.}
+
+
+\section{Conclusion}
+\mjm{Different starting points}
+{\tiny
+\[\displaystyle R\, := \,{\frac {1}{{x}^{2}{y}^{2} \left( at{x}^{2}y+bt{y}^{2}+ctx-xy \right) } \left(  \left( {y}^{-1} \right) ^{i} \left( {x}^{-1} \right) ^{j}xy- \left( {\frac {y}{x}} \right) ^{i}{y}^{3} \left( {x}^{-1} \right) ^{j}- \left( {y}^{-1} \right) ^{i} \left( {\frac {x}{y}} \right) ^{j}{x}^{3}\\
+\mbox{}+{x}^{i+4} \left( {\frac {x}{y}} \right) ^{j}y+ \left( {\frac
+    {y}{x}} \right) ^{i}{y}^{4+j}x-{x}^{i+3}{y}^{j+3} \right) }\]}
+\bibliographystyle{plain}
+\bibliography{main.bib}
+
+\section{Appendix}\small
+\begin{align*}
+Q(1,1;t)=1&+t+2\,{t}^{2}+4\,{t}^{3}+9\,{t}^{4}+21\,{t}^{5}+51\,{t}^{6}+127\,{t}
+^{7}+323\,{t}^{8}+835\,{t}^{9}+2188\,{t}^{10}+5798\,{t}^{11}+15511\,{t
+}^{12}\\&+41835\,{t}^{13}+113634\,{t}^{14}+310572\,{t}^{15}+853467\,{t}^{
+16}+2356779\,{t}^{17}+6536382\,{t}^{18}+18199284\,{t}^{19}\\&+50852019\,{
+t}^{20}+142547559\,{t}^{21}+400763223\,{t}^{22}+1129760415\,{t}^{23}+
+3192727797\,{t}^{24}\\&+9043402501\,{t}^{25}+25669818476\,{t}^{26}+
+73007772802\,{t}^{27}+208023278209\,{t}^{28}+O \left( {t}^{
+30} \right) \quad (OEIS A001006)\\[2mm]
+Q(x,0;t)=1&+xt+{x}^{2}{t}^{2}+ \left( {x}^{3}+1 \right) {t}^{3}+ \left( {x}^{4}+
+3\,x \right) {t}^{4}+ \left( {x}^{5}+6\,{x}^{2} \right) {t}^{5}+
+ \left( {x}^{6}+10\,{x}^{3}+5 \right) {t}^{6}+ \left( {x}^{7}+15\,{x}^
+{4}+21\,x \right) {t}^{7}\\
+&+ \left( {x}^{8}+21\,{x}^{5}+56\,{x}^{2}
+ \right) {t}^{8}+ \left( {x}^{9}+28\,{x}^{6}+120\,{x}^{3}+42 \right) {
+t}^{9}+ \left( {x}^{10}+36\,{x}^{7}+225\,{x}^{4}+210\,x \right) {t}^{
+10}\\&+ \left( {x}^{11}+45\,{x}^{8}+385\,{x}^{5}+660\,{x}^{2} \right) {t}
+^{11}+ \left( {x}^{12}+55\,{x}^{9}+616\,{x}^{6}+1650\,{x}^{3}+462
+ \right) {t}^{12}+O \left( {t}^{13} \right) \\[2mm]
+Q(0,0;t)=1&+{t}^{3}+5\,{t}^{6}+42\,{t}^{9}+462\,{t}^{12}+6006\,{t}^{15}+87516\,
+{t}^{18}+1385670\,{t}^{21}+23371634\,{t}^{24}+414315330\,{t}^{27}\\&+
+7646001090\,{t}^{30}+O \left( {t}^{
+33} \right) 
+\end{align*}
+
+\end{document}
+
