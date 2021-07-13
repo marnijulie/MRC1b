@@ -1,0 +1,226 @@
+\documentclass[A4,12pt]{article}
+
+% essential packages
+\usepackage{amsmath, amssymb, amsthm, enumerate}
+\usepackage{tikz}
+
+% packages of convenience
+\usepackage{cite, comment}
+\usepackage{mathtools, xcolor}
+
+% formatting
+\usepackage[margin=1.25in]{geometry}
+\usepackage{fancyhdr, graphicx, indentfirst}
+%\setlength{\parindent}{2em}
+\usepackage[T1]{fontenc}
+\frenchspacing
+\pagestyle{myheadings}
+
+
+% --------------------------------------------------------------------
+
+% quick linear algebra
+\newcommand{\<}{\left\langle}
+\renewcommand{\>}{\right\rangle}
+
+% quick root system things
+%\def\chk#1{#1^{\normalfont\smash{\scalebox{.7}[1.4]{\rotatebox{90}{\guilsinglleft}}}}}
+\newcommand{\coweight}{\check{\omega}}
+
+% quick lattice model things
+\newcommand{\steps}{\mathcal{S}}
+\newcommand{\variety}{\mathcal{V}}
+\newcommand{\z}{\mathbf{z}}
+\renewcommand{\a}{\mathbf{a}}
+\DeclareMathOperator{\Walk}{Walk}
+\DeclareMathOperator{\Diag}{Diag}
+
+% formatting conveniences
+\newcommand{\ds}{\displaystyle}
+\newcommand{\ts}{\textstyle}
+
+% amsthm
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\theoremstyle{definition}
+\newtheorem*{definition}{Definition}
+
+\theoremstyle{example}
+\newtheorem{example}{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+% --------------------------------------------------------------------
+
+% header formatting
+\pagestyle{fancy}\lhead{MRC1b 2021} \rhead{July 2021}
+\chead{{\large{\bf Notes on Cominiscule Models}}} \lfoot{} \rfoot{\bf \thepage} \cfoot{}
+
+\begin{document}
+
+\section{Background}
+
+TODO: Not sure if this is the right formulation, but we'll roll with it
+
+\begin{definition}
+Let $G$ be a group acting on an inner product space $V$ with a distinguished basis $\mathcal{B}=(b_1,\dots, b_d)$. We say that a nonempty set of vectors $\steps$ is a \textbf{$(G,\mathcal{B})$-reflectable step set} if:
+\begin{itemize}
+\item for all $g\in G$ and $s\in \steps$, we have $g\cdot s\in S$; and
+\item for all $s\in \steps$ and $1\leq i\leq d$, there is an integer $c_i$ such that $\<s, b_i\>\in \{-c_i,0,c_i\}$.
+\end{itemize}
+If additionally no proper subset of $\steps$ is also $(G,\mathcal{B})$-reflectable, we say $\steps$ is \textbf{irreducible}.
+\end{definition}
+
+TODO: Exposition on root systems to be written.
+
+\begin{proposition}
+Let $\Phi$ be a root system of rank $d$ with associated Weyl group $W$. Let $\Delta=(\alpha_1,\dots,\alpha_i)$ be a choice of simple roots for $\Phi$ and $(\coweight_1,\dots,\coweight_d)$ be the corresponding fundamental coweights. Then $\steps^{(i)}:=W\cdot\coweight_i$ is a $(W,\Delta)$-reflectable step set if and only if $\coweight_i$ is cominiscule.
+\end{proposition}
+
+Let us call these $\steps^{(i)}$ \textbf{cominiscule models}. Note that by definition, cominiscule models are irreducible.
+
+\begin{example}
+\label{ex:cominiscule-1}
+For a root system of type $A_d$, all fundamental coweights are cominiscule. Using the usual simple roots $\alpha_i=e_i-e_{i+1}$, the step set $\steps^{(1)}$ in the coweight basis is 
+
+$$ \steps^{(1)} = \left\{ ~
+\begin{bmatrix} 1\\0\\0\\ \vdots\\0\\0 \end{bmatrix} ,~~ \begin{bmatrix} -1\\1\\0\\ \vdots \\0\\0 \end{bmatrix}
+ ,~~ \cdots ,~~
+\begin{bmatrix} 0\\0\\0\\ \vdots \\-1\\1 \end{bmatrix} ,~~ \begin{bmatrix} 0\\0\\0\\ \vdots \\0\\-1 \end{bmatrix}
+~ \right\}, $$
+so that the corresponding stepset inventory is $S^{(1)}(\z) = z_1 + \sum_{i=1}^{d-1} \frac{z_{i+1}}{z_i} + \frac{1}{z_d}$.
+\end{example}
+
+\section{Well-Behaved Models}
+
+%Let $\mathcal{E}$ be the standard basis on $\r^d$ and let $\steps$ be a $(W, \mathcal{E})$-reflectable step set.
+
+For a step set $\steps$, let $Q_\steps(\z,t) := \ds\sum_{p_1,\dots, p_d, n\geq 0} \Walk_\steps(\mathbf{0}\to (p_1,\dots, p_d)) z_1^{p_1}\dots z_d^{p_d}t^n$ be the generating function for (unweighted) walks with steps in $\steps$, staying in the positive orthant. 
+
+Below, we say that a step set $\steps$ is \textbf{well-behaved} if there is some Laurent polynomial $G$ such that
+$$ Q_\steps(\a,t) = \Diag\left(\frac{G(\z)}{\prod_{i=1}^d (1-z_i) \cdot \left(1-tz_1\dots z_d S(\frac{\a}{\z}) \right)}\right), $$
+where we write $\frac{\a}{\z}$ as as a shorthand for $(\frac{a_1}{z_1},\cdots\frac{a_d}{z_d})$. In this case, we write $\variety:=\variety(H)$ for the vanishing locus of the denominator $\prod_{i=1}^d (1-z_i) \cdot \left(1-tz_1\dots z_d S(\frac{\a}{\z}) \right)$.
+
+TODO: Do we need to state some non-divisibility properties for $G$?
+
+\begin{proposition}
+Given a well-behaved step set $\steps$, the strata of $\variety$ are (as sets),
+$$\Sigma_I = \left\{(\z\in\mathbb{C}^d,t)\ : z_i=1 \text{ and } t=\left(z_1\dots z_d S({\ts\frac{\a}{\z}})\right)^{-1} \right\}; \qquad T_I = \left\{(\z\in\mathbb{C}^d,t)\ : z_i=1 \right\}, $$
+where $I$ is a subset of $\{1,\dots, d\}$. Moreover, all critical points of $\variety$ in $T_I$ are also in $\Sigma_I$.
+%the divisors in a local factorization for any point $\mathbf{p}\in\variety$ are [represented by] some choice of $(1-z_i)$ and $\left(1-tz_1\dots z_d S(\frac{\a}{\z})\right)$. For any such 
+\end{proposition}
+
+\begin{proof}
+TODO: Prove this. I don't know how to argue the geometry. The second statement is easy: the relevant matrix is lower-triangular on $T_I^\circ$.
+\end{proof}
+
+Let $\Sigma_I^\circ$ denote the points of $\Sigma_I$ which are not in $\Sigma_{I'}$ for any larger $I\subset I'$; that is, for which $z_j\neq 1$ for all $j\notin I$. 
+
+\begin{theorem}
+\label{thm:well-behaved-critical}
+Given a well-behaved step set $\steps$, the critical points contained in the open stratum $\Sigma_I^\circ$ are the solutions $\mathbf{p}=(p_1,\dots, p_d)$ to the equations $p_j \partial_j S({\ts\frac{\a}{\z}})\Big\vert_{\z=\mathbf{p}}=0$ for all $j\in\{1,\dots,n\}\smallsetminus I$ and $p_i=1$ for $i\in I$.
+\end{theorem}
+
+TODO: Do the critical point equations assume some additional geometry? I'm nervous because I have not said ``transverse'' at any point...
+
+\begin{proof}
+Begin by defining the notation $I=\{i_1,\dots, i_k\}$, and $\tilde{S}(\z) := 1-tz_1\cdots z_dS(\frac{\a}{\z})$, as well as $t_0=\left(p_1\cdots p_d S({\ts\frac{\a}{\mathbf{p}}})\right)^{-1}$.
+
+The critical point equations of Pemantle--Wilson [CITE: Equations (8.3.1--2)] show that $\mathbf{p}\in \Sigma_I^\circ$ is a critical point of $\variety$ precisely when the following determinants vanish for all $j\in \{1,\dots, d\}\smallsetminus I$:
+\begin{equation}
+\label{eqn:critical-points}
+0 = \det \begin{bmatrix}
+-z_{i_1} & ~ & 0 & 0 & 0 \\
+ &\ddots & ~ & ~ \\
+0 & ~ & -z_{i_k} & 0 & 0 \\
+z_{i_1}\partial_{i_1} \tilde{S}(\z) & ~ & z_{i_k}\partial_{i_k} \tilde{S}(\z) & z_j\partial_j \tilde{S}(\z) & -tz_1\cdots z_d S(\frac{\a}{\z}) \\
+1 & \cdots & 1 & 1 & 1
+\end{bmatrix}_{\z=\mathbf{p},~ t=t_0}.
+\end{equation}
+ Performing a cofactor expansion along the last row shows that Equations (\ref{eqn:critical-points}) are equivalent to
+\begin{align*}
+0 &= \Big[ (z_{i_1}\cdots z_{i_k})\big( t(z_{1}\cdots z_d)S({\ts\frac{\a}{\z}})+z_j\partial_j \tilde{S}(\z)\big)\Big]_{\z=\mathbf{p},~ t=t_0} \\
+0 &= t_0S({\ts\frac{\a}{\mathbf{p}}})-t_0S({\ts\frac{\a}{\mathbf{p}}})-t_0\Big[(z_1\cdots z_j^2\cdots z_d)\partial_j S({\ts\frac{\a}{\z}})\Big]_{\z=\mathbf{p}} \\
+0 &= p_j \partial_j \log S({\ts\frac{\a}{\z}})\Big\vert_{\z=\mathbf{p}}
+\end{align*}
+Since log is a monotonic function, $\partial_j \log S({\ts\frac{\a}{\z}})=0$ if and only if $\partial_j S({\ts\frac{\a}{\z}})=0$.
+\end{proof}
+
+TODO: The last steps feel a little bit illegal. I think that one could be more careful and get to the same conclusion, but I'm not sure what to shore up. I'm also constantly worried about $p_j=0$. It seems that some casework needs to be done, and it's very possible that other solutions exist, but I am going to pretend as if not.
+
+\begin{remark}
+Compared to the notation of Pemantle--Wilson, we have permuted the factors $f_i$ so that the coordinates corresponding to $I$ would be placed in the leftmost columns of the relevant minor. We have also written $k$ where they would write $d-k$, or perhaps $(d+1)-(k+1)$.
+\end{remark}
+
+\section{The Cominiscule Model $\steps^{(1)}$ in Type A$_d$}
+
+Recall that $S^{(1)}$, the stepset generating function for the cominiscule Model
+
+\begin{proposition}
+The cominiscule model $\steps^{(1)}$ is well-behaved.
+\end{proposition}
+
+\begin{proof}
+TODO: Prove this. I think this is pretty reasonable to show using Theorem 7.1 of Melczer--Mishna, but haven't worked through the details.
+\end{proof}
+
+As described in Example \ref{ex:cominiscule-1}, $S^{(1)}=z_1 + \sum_{i=1}^{d-1} \frac{z_{i+1}}{z_i} + \frac{1}{z_d}$, which gives an explicit form to the solutions in Theorem \ref{thm:well-behaved-critical}:
+
+\[
+p_j \partial_j S({\ts\frac{\a}{\z}})\Big\vert_{\z=\mathbf{p}}
+= \left\{ \begin{array}{ll}
+-a_1\cdot \frac{1}{p_1} + \frac{a_2}{a_1}\cdot\frac{p_1}{p_2} & \text{if } j=1 \\~\\
+-\frac{a_d}{a_{d-1}}\cdot \frac{p_{d-1}}{p_d} + \frac{1}{a_d}\cdot p_d &  \text{if } j=d \\~\\
+-\frac{a_j}{a_{j-1}}\cdot \frac{p_{j-1}}{p_j} + \frac{a_{j+1}}{a_j}\cdot\frac{p_{j}}{p_{j+1}} & \text{otherwise}
+\end{array} \right.
+\]
+Clearing denominators, the equations become
+\[
+\left\{ \begin{array}{lll}
+a_1^2p_2 &= a_2\cdot p_1^2 & \text{if } 1\notin I \\~\\
+a_d^2\cdot p_{d-1} &= a_{d-1}\cdot p_d^2 & \text{if } d\notin I \\~\\
+a_j^2\cdot p_{j+1}p_{j-1} &= a_{j-1}a_{j+1}\cdot p_j^2 & \text{for } j\in \{2,\dots, d-1\}\smallsetminus I
+\end{array} \right.
+\]
+
+\begin{conjecture}
+The smooth critical points of the model $\steps^{(1)}$ in $\Sigma_I^\circ$ are $(\zeta a_1,\dots, \zeta^da_d)$ when $I=\{1,\dots, d\}$ where $\zeta$ is a $(d-1)^\text{th}$ root of unity. 
+
+For each subset $I=\{i_1<i_2<\cdots< i_k\}$ of $\{1,\dots, d\}$, denote its complement by $J=\{1,\dots, d\}\smallsetminus I$. Define also $i_0=0, i_{k+1}=d+1,$ and $a_0=a_{k+1}=1$.
+
+Then for each proper $I$, there is a unique critical point $\mathbf{p}=(p_1,\dots, p_d)$ of the model $\steps^{(1)}$ in the open stratum $\Sigma_I^\circ$. It has coordinates $p_i=1$ for all $i\in I$, and $p_j = a_j (a_{\ell-1} a_\ell)^{-\frac{d-1}{d}(i_\ell-j+1)}$ for all $j\in J$ such that $i_{\ell-1} < j < i_\ell$. 
+\end{conjecture}
+
+\begin{proof}
+TODO: Prove or correct the above conjecture.
+
+The system is ``tridiagonal'' (nonlinear, but same idea) and so one can probably solve it by induction; the observations below are simply what I got after computing out from $p_1$ to $p_4$ (and back again). It seems to be rather difficult to keep track of the roots of unity carefully so I just went back at the end and did a backwards ``engineer's induction'' to determine that the root of unity had to have order dividing $d+1$.
+
+Some calculations suggest that when $I=\{1,\dots,d\}$, the solutions are $p_i=\zeta^i a_i$, where $\zeta$ is a $(d+1)^\text{th}$ root of unity. When $I$ is smaller, things are more annoying because the ``endpoints'' of the intervals $[i_\ell,i_{\ell+1}]$ will generally contribute to the weights; for instance if $I=\{1,\dots, d-1\}$, the same calculations suggest that $p_i=\zeta^i a_i a_d^{(i-d)\frac{d-1}{d}}$. 
+
+However, it does seem like these extra weights will guarantee that the $\zeta=1$ whenever $a_d$ is not a root of unity; that is, whenever $a_d\neq 1$. (But $a_i\neq 1$ is probably a foundational assumption because otherwise there would be cancellation between $G$ and the denominator!) This does agree with the July 12 calculations for $d=2$.
+\end{proof}
+
+
+
+%Then [CITE: Pemantle--Wilson Theorem 10.3.4, page 257] is 
+
+\newpage
+\footnotesize
+\begin{thebibliography}{10}
+
+%------%
+
+
+%
+%\bibitem{ArmReiRho2015}
+%D.~Armstrong, V.~Reiner, and B.~Rhoades.
+%\newblock Parking spaces.
+%\newblock {\em Adv. Math.}, \textbf{269}(10): 647--706, 2015.
+
+\end{thebibliography}
+
+\end{document}
