@@ -63,24 +63,47 @@
 
 \section{Background}
 
-TODO: Not sure if this is the right formulation, but we'll roll with it
+\subsection{Root Systems}
+
+Recall that a \textbf{(crystallographic) root system} is a finite spanning set of a real inner product space $V$ such that
+\begin{enumerate}[(1)]
+\item If $\alpha\in \Phi$ and $k\alpha\in\Phi$, then $k=\pm 1$. 
+\item Let $s_\alpha$ be the reflection across the hyperplane orthogonal to $\alpha$. If $\alpha,\beta\in\Phi$, then $s_\alpha(\beta)\in\Phi$.
+\item If $\alpha,\beta\in\Phi$ then $\frac{\<\alpha,\beta\>}{\<\alpha,\alpha\>}\in \frac12\mathbb{Z}$.
+\end{enumerate}
+%(Noncrystallographic root systems are those satisfying only (1) and (2).) 
+(The ``most important'' is (2); in particular, relaxations omitting either/both of (1) or (3) are also studied.) The elements of a root system $\Phi$ are called \textbf{roots}. 
+
+We say that a tuple of roots $\Delta=(\alpha_1,\dots,\alpha_d)$ in $\Phi$ is a choice of \textbf{simple roots} if and only if $\Delta$ is a basis of $V$, and for every root $\beta=\sum b_i\alpha_i$ such that all $b_i$ have the same sign. 
+
+Every root system admits a (non-unique) choice of simple roots $\Delta$. The elements of the dual basis of $\Delta$ (that is, the tuple $(\coweight_1,\dots,\coweight_d)$ such that $\<\alpha_i,\coweight_j\>=\delta_{i,j}$) are called the \textbf{fundamental coweights}.
+
+The \textbf{dominant chambre} $\mathcal{C}$ is the set of vectors $\z\in V$ such that $\<\z,\alpha_i\>\geq 0$. Equivalently,
+\[
+\mathcal{C} = \left\{\sum_{k=1}^d z_k\coweight_k: z_k\geq 0 \text{ for all } k\right\}
+\]
+In this formulation it is clear that the dominant chambre is precisely the ``positive orthant'' in the coweight basis.
+
+The root systems are completely classified in the following sense: a root system is \textbf{reducible} if it can be written as $\Phi_1\cup \Phi_2$ where $\Phi_1$ is a root system for a subspace $U\subsetneq V$ and $\Phi_2$ is a root system for $U^\perp$. There are four infinite families of root systems (the \textbf{classical types} $A_d, B_d, C_d$ and $D_d$) and five others (the \textbf{exceptional types} $E_6, E_7, E_8, F_4$ and $G_2$). The subscript in the name is the dimension of $V$.
+
+\subsection{Reflectable Walks}
 
 \begin{definition}
-Let $G$ be a group acting on an inner product space $V$ with a distinguished basis $\mathcal{B}=(b_1,\dots, b_d)$. We say that a nonempty set of vectors $\steps$ is a \textbf{$(G,\mathcal{B})$-reflectable step set} if:
+Let $G$ be a group acting on a real inner product space $V$ with a distinguished basis $\mathcal{B}=(\mathbf{b}_1,\dots, \mathbf{b}_d)$. We say that a nonempty set of vectors $\steps$ is a \textbf{$(G,\mathcal{B})$-reflectable step set} if:
 \begin{itemize}
-\item for all $g\in G$ and $s\in \steps$, we have $g\cdot s\in S$; and
-\item for all $s\in \steps$ and $1\leq i\leq d$, there is an integer $c_i$ such that $\<s, b_i\>\in \{-c_i,0,c_i\}$.
+\item for all $g\in G$ and $s\in \steps$, we have $g\cdot s\in \steps$; and
+\item for all $s\in \steps$ and $1\leq i\leq d$, there is an integer $c_i$ such that $\<s, \mathbf{b}_i\>\in \{-c_i,0,c_i\}$.
 \end{itemize}
-If additionally no proper subset of $\steps$ is also $(G,\mathcal{B})$-reflectable, we say $\steps$ is \textbf{irreducible}.
+If additionally no proper subset of $\steps$ is also $(G,\mathcal{B})$-reflectable, we say $\steps$ is \textbf{transitive}.
 \end{definition}
 
-TODO: Exposition on root systems to be written.
+Although usually formulated slightly differently, the following ``Proposition'' may be taken as the definition of a \textbf{cominiscule coweight}:
 
 \begin{proposition}
 Let $\Phi$ be a root system of rank $d$ with associated Weyl group $W$. Let $\Delta=(\alpha_1,\dots,\alpha_i)$ be a choice of simple roots for $\Phi$ and $(\coweight_1,\dots,\coweight_d)$ be the corresponding fundamental coweights. Then $\steps^{(i)}:=W\cdot\coweight_i$ is a $(W,\Delta)$-reflectable step set if and only if $\coweight_i$ is cominiscule.
 \end{proposition}
 
-Let us call these $\steps^{(i)}$ \textbf{cominiscule models}. Note that by definition, cominiscule models are irreducible.
+Let us call these $\steps^{(k)}$ \textbf{cominiscule models}. Note that by definition, cominiscule models are transitive. Since the $c_i$ in the definition of reflectability are all $1$ (and in particular, are independent of $k$), the union of cominiscule models is also a valid $(W,\Delta)$-reflectable step set.
 
 \begin{example}
 \label{ex:cominiscule-1}
@@ -93,6 +116,11 @@ $$ \steps^{(1)} = \left\{ ~
 ~ \right\}, $$
 so that the corresponding stepset inventory is $S^{(1)}(\z) = z_1 + \sum_{i=1}^{d-1} \frac{z_{i+1}}{z_i} + \frac{1}{z_d}$.
 \end{example}
+
+\begin{remark}
+\label{ex:cominiscule-1}
+Type $A_d$ is somehow the most interesting case. For a root system of types $B_d$ or $C_d$, only $\coweight_1$ is cominiscule. For a root system of type $D_d$, only $\coweight_1$ and $\coweight_2$ are cominiscule. There are no cominiscule coweights of type $G_2$, and I don't know about the remaining types ($E_6, E_7, E_8,$ and $F_4$).
+\end{remark}
 
 \section{Well-Behaved Models}
 
@@ -157,10 +185,8 @@ Compared to the notation of Pemantle--Wilson, we have permuted the factors $f_i$
 
 \section{The Cominiscule Model $\steps^{(1)}$ in Type A$_d$}
 
-Recall that $S^{(1)}$, the stepset generating function for the cominiscule Model
-
 \begin{proposition}
-The cominiscule model $\steps^{(1)}$ is well-behaved.
+The step set $\steps^{(1)}$ for the root system A$_1$ is well-behaved.
 \end{proposition}
 
 \begin{proof}
